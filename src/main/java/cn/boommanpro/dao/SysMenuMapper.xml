@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.boommanpro.dao.SysMenuMapper">
+  <resultMap id="BaseResultMap" type="cn.boommanpro.model.SysMenu">
+    <!--@mbg.generated generated on Sat Jun 08 18:20:06 CST 2019.-->
+    <id column="menu_no" jdbcType="INTEGER" property="menuNo" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="parent_no" jdbcType="INTEGER" property="parentNo" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="url_no" jdbcType="INTEGER" property="urlNo" />
+    <result column="disabled" jdbcType="INTEGER" property="disabled" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+    <resultMap id="MenuVoResultMap" type="cn.boommanpro.dto.SysMenuVo">
+
+        <result column="menu_no" jdbcType="INTEGER" property="menuNo"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="parent_no" jdbcType="INTEGER" property="parentNo"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="disabled" jdbcType="INTEGER" property="disabled"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="resource" jdbcType="VARCHAR" property="resource"/>
+    </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Sat Jun 08 18:20:06 CST 2019.-->
+    menu_no, title, parent_no, `type`, icon, sort, url_no, disabled, description
+  </sql>
+  <update id="setSortByNo">
+    UPDATE sys_menu set sort=#{sort} WHERE menu_no=#{menuNo}
+    </update>
+  <update id="setDisableStatusByNo">
+    UPDATE sys_menu set disabled=#{status} WHERE menu_no=#{menuNo}
+  </update>
+  <select id="listAllSysMenuVo" resultMap="MenuVoResultMap">
+     SELECT
+	   sys_menu.menu_no,
+	   sys_menu.title,
+	   sys_menu.parent_no,
+	   sys_menu.type,
+	   sys_menu.icon,
+	   sys_menu.disabled,
+	   sys_menu.description,
+	   sys_menu.sort,
+	   sys_url.resource
+
+	FROM
+	   sys_menu
+	LEFT JOIN sys_url ON sys_menu.url_no = sys_url.url_no where sys_menu.disabled=0	ORDER BY sys_menu.sort
+    </select>
+
+
+  <!--根据roleNo找到menuNo-->
+  <select id="listMenuNosByRoleNo" resultType="int">
+    SELECT menu_no FROM sys_role_menu where role_no=#{roleNo}
+    </select>
+</mapper>

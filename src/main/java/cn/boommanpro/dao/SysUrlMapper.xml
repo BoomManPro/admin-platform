@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.boommanpro.dao.SysUrlMapper">
+  <resultMap id="BaseResultMap" type="cn.boommanpro.model.SysUrl">
+    <!--@mbg.generated generated on Sat Jun 08 18:20:49 CST 2019.-->
+    <id column="url_no" jdbcType="INTEGER" property="urlNo" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="resource" jdbcType="VARCHAR" property="resource" />
+    <result column="module" jdbcType="VARCHAR" property="module" />
+    <result column="data" jdbcType="VARCHAR" property="data" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="view_type" jdbcType="VARCHAR" property="viewType" />
+    <result column="disabled" jdbcType="INTEGER" property="disabled" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="operation" jdbcType="VARCHAR" property="operation" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Sat Jun 08 18:20:49 CST 2019.-->
+    url_no, `name`, `resource`, `module`, `data`, sort, view_type, disabled, description, 
+    `operation`
+  </sql>
+  <select id="listAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sys_url where disabled=0
+  </select>
+  <update id="setDisabledStatus">
+   UPDATE sys_url set disabled=#{status} where url_no=#{urlNo}
+    </update>
+  <select id="listOfRole" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sys_role_url where role_no=#{roleNo}
+  </select>
+  <select id="listUrlNosOfRoleNo" resultType="int">
+  SELECT url_no FROM sys_role_url where role_no=#{roleNo}
+    </select>
+  <select id="getResourceListByUserNo" resultType="java.lang.String">
+	SELECT
+		su.resource
+	FROM
+		( sys_user_role AS sur LEFT JOIN sys_role_url AS sru ON sur.role_no = sru.role_no )
+		LEFT JOIN sys_url AS su ON su.url_no = sru.url_no
+	WHERE
+		sur.user_no =#{userNo}
+    </select>
+</mapper>

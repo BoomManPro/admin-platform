@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.boommanpro.dao.SysUserMapper">
+  <resultMap id="BaseResultMap" type="cn.boommanpro.model.SysUser">
+    <!--@mbg.generated generated on Sat Jun 08 18:20:53 CST 2019.-->
+    <id column="user_no" jdbcType="INTEGER" property="userNo" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="mail" jdbcType="VARCHAR" property="mail" />
+    <result column="disabled" jdbcType="INTEGER" property="disabled" />
+    <result column="deleted" jdbcType="INTEGER" property="deleted" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="last_login_date" jdbcType="TIMESTAMP" property="lastLoginDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Sat Jun 08 18:20:53 CST 2019.-->
+    user_no, login_name, nickname, phone, mail, disabled, deleted, create_date, update_date, 
+    last_login_date
+  </sql>
+  <update id="deleteByUserNo">
+    UPDATE sys_user SET deleted=1 WHERE user_no=#{userNo}
+  </update>
+
+  <update id="setUserDisable">
+    UPDATE sys_user SET disabled=#{status} WHERE user_no=#{userNo}
+  </update>
+  <select id="listAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sys_user
+    <where>
+      <if test="loginName != null">
+        AND login_name = #{loginName,jdbcType=VARCHAR}
+      </if>
+      <if test="nickname != null">
+        AND nickname = #{nickname,jdbcType=VARCHAR}
+      </if>
+      <if test="phone != null">
+        AND phone = #{phone,jdbcType=VARCHAR}
+      </if>
+      <if test="mail != null">
+        AND mail = #{mail,jdbcType=VARCHAR}
+      </if>
+      <if test="disabled != null">
+        AND disabled = #{disabled,jdbcType=INTEGER}
+      </if>
+      <if test="deleted != null">
+        AND deleted = #{deleted,jdbcType=INTEGER}
+      </if>
+      <if test="createDate != null">
+        AND create_date = #{createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateDate != null">
+        AND update_date = #{updateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastLoginDate != null">
+        AND last_login_date = #{lastLoginDate,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  <select id="selectByLoginName" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM `sys_user` where login_name=#{loginName}
+  </select>
+</mapper>
